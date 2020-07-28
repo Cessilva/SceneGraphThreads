@@ -66,6 +66,12 @@ You can use the BrightScript console (port 8085) to view a log with your channel
 ### TIMEGRID 
 > https://github.com/Cessilva/TimeGridView
 
+### COMPILING
+<p align="center"> 
+<img src="/imgs/TimeGridViewCompile.png"/> 
+</p> 
+
+### RUNNING
 <p align="center"> 
 <img src="/imgs/TimeGridView.png"/> 
 </p> 
