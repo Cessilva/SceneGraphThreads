@@ -32,6 +32,44 @@ You can use the BrightScript console (port 8085) to view a log with your channel
 
 > https://developer.roku.com/es-mx/docs/developer-program/performance-guide/measuring-channel-performance.md
 
+
+<table >
+  <tr>
+    <th>Estadística</th>
+    <th>Tipo de beacon</th>
+    <th>Description</th>
+  </tr>
+  <tr>
+    <td>TimeBase</td>
+    <td>Initiate</td>
+    <td>Una marca de tiempo para el beacon basada en los milisegundos transcurridos desde que se grabó el beacon initiate para el lanzamiento del canal.</td>
+  </tr>
+  <tr>
+    <td>Duration</td>
+    <td>Complete</td>
+    <td>Milliseconds entre el initiate y el complete beacons.</td>
+  </tr>
+  <tr>
+    <td>Memory Points (MiP, KiP, or p)</td>
+    <td>Complete</td>
+    <td>Los puntos de memoria proporcionan una medida relativa para el rendimiento de la memoria de su canal que se puede utilizar para el análisis de tendencias.  Puede monitorear la cantidad de puntos de memoria informados para cualquier beacon complete para ver si sube o baja en las compilaciones de su aplicación.  Los puntos de memoria se miden en mebipoints (MiP), kibipoints (KiP) o puntos (p).  Esto es similar a cómo las unidades de información se expresan como mebibytes (MiB), kibibytes (Kib) y bytes.</td>
+  </tr>
+  <tr>
+    <td>SteadyMaxMemPoints</td>
+    <td>N/A</td>
+    <td> La cantidad máxima de puntos de memoria que su aplicación usó durante un intervalo de 5 segundos (el uso de este intervalo evita que los picos temporales se registren como el máximo).  
+    TimeBase y duration indican el período en que se produjo el uso máximo.</td>
+  </tr>
+</table>
+
+## PROBANDO EL RENDIMIENTO DE ALGUNO DE NUESTROS CANALES 
+### TIMEGRID 
+> https://github.com/Cessilva/TimeGridView
+
+<p align="center"> 
+<img src="/imgs/TimeGridView.png" width="350"/> 
+</p> 
+
 # Channel performance metrics reference(Referencia de métricas de rendimiento del canal)
 
 El sistema operativo Roku puede medir y registrar métricas de rendimiento de ocho canales: channel launch, app compile, dialog launch, Electronic Program Guide (EPG) launch, video start, live start, channel change, and channel exit.  Para cada métrica de rendimiento del canal, la siguiente tabla enumera cómo se miden y cuándo se disparan sus balizas de inicio y finalización.
