@@ -1,0 +1,1 @@
+# Performance FAQ (Preguntas frecuentes sobre rendimiento)
