@@ -67,7 +67,7 @@ You can use the BrightScript console (port 8085) to view a log with your channel
 > https://github.com/Cessilva/TimeGridView
 
 <p align="center"> 
-<img src="/imgs/TimeGridView.png" width="350"/> 
+<img src="/imgs/TimeGridView.png" width="600"/> 
 </p> 
 
 # Channel performance metrics reference(Referencia de métricas de rendimiento del canal)
