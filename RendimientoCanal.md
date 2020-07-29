@@ -81,3 +81,7 @@ You can use the BrightScript console (port 8085) to view a log with your channel
 El sistema operativo Roku puede medir y registrar métricas de rendimiento de ocho canales: channel launch, app compile, dialog launch, Electronic Program Guide (EPG) launch, video start, live start, channel change, and channel exit.  Para cada métrica de rendimiento del canal, la siguiente tabla enumera cómo se miden y cuándo se disparan sus balizas de inicio y finalización.
 
 > https://developer.roku.com/es-mx/docs/developer-program/performance-guide/measuring-channel-performance.md
+
+# Debugging Your Application
+
+> https://sdkdocs-archive.roku.com/Debugging-Your-Application_3737101.html 
