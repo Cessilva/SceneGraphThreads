@@ -57,6 +57,12 @@ El registro está encriptado y las actualizaciones requieren un rendimiento rela
 
 # Read and write from temp file
 
+Este un ejemplo de como se realiza:
+
+<p align="center"> 
+<img src="/imgs/StorageTMP.png"/> 
+</p> 
+
 # Cleaning cache 
 From the remote control, press the following buttons consecutively:
 Press Home 5 times.

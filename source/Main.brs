@@ -7,6 +7,12 @@ sub Main()
     scene = screen.CreateScene("mainScene")
     screen.show()
 
+    WriteAsciiFile("tmp:/config.txt", "Hola me llamo ceci")
+
+    text=ReadAsciiFile("tmp:/config.txt")
+    print "------READ/WRITE TMP MEMORY------------"
+    print text
+
     while(true)
         msg = wait(0, m.port)
         msgType = type(msg)
