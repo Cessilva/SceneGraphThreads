@@ -31,6 +31,12 @@ Usando el comando "r2d2_bitmaps" para verificar la cantidad de memoria de textur
 <img src="/imgs/MemoryTexture.png"/> 
 </p> 
 
+### Other
+
+<p align="center"> 
+<img src="/imgs/r2d2_bitmaps.png"/> 
+</p> 
+
 Este comando generará una lista de direcciones de memoria que representan los activos cargados en la memoria de textura, su ancho y alto, así como su tamaño en bytes.  En la parte inferior, también muestra la memoria disponible que le queda en su dispositivo, la cantidad utilizada y la cantidad que el dispositivo tiene en total.  Si su canal usa múltiples imágenes de alta resolución (por ejemplo, más de dos imágenes de 1920 x 1080), notará que la memoria disponible alcanzará un pico en algún lugar inferior a la cantidad máxima y seguirá fluctuando entre los valores a medida que el administrador de memoria de texturas intente descargar activos y  volviéndolos a cargar para administrar la memoria.  ¡Asegúrate de usar las técnicas de rendimiento enumeradas en esta guía para que tu canal no se encuentre con estos problemas!
 
 # Memoria del sistema (DRAM)
