@@ -63,9 +63,34 @@ Este un ejemplo de como se realiza:
 <img src="/imgs/StorageTMP.png"/> 
 </p> 
 
+# Almacenar videos e imagenes en cachefs 
+
+No hay forma de determinar cuanta memoria esta disponible.Se utiliza código para eliminar las imágenes más antiguas cuando descargamos nuevas y mantenemos muy pocas imágenes localmente para evitar problemas con el almacenamiento. 
+
+Los archivos deberían persistir de esta manera al salir / reiniciar la aplicación, en cachefs: y tal vez en tmp: (inseguro sobre esto último), pero no a través del reinicio.  Y hay condiciones de poca memoria cuando el dispositivo necesita memoria, vaciará los archivos de caché para hacer espacio.  Lo cual es típico de los cachés.  La nota al margen es optimizar sus imágenes para el tamaño: mayor compresión o tal vez diseñar para HD en lugar de FHD, para que las imágenes se descarguen más rápido
+
+>https://community.roku.com/t5/Roku-Developer-Program/Image-caching/td-p/
+
+Puede almacenar imágenes en caché utilizando CacheFS.  De la misma manera que un archivo puede leerse desde "pkg: / filepath / filename", puede escribir y leer desde "cachefs: / filepath / filename". 
+CacheFS está disponible para todos los canales en nuestra plataforma.  Si inicia el Canal A (que usa CacheFS) y luego inicia el Canal B (que también usa CacheFS) en el mismo dispositivo, es posible que las imágenes del Canal A ya no se almacenen en caché debido a restricciones de memoria de CacheFS.
+
+Example of why how to check if images is in CacheFS:
+
+
+A partir de Roku OS 8, se implementa [BETA] New file system for data caching:
+
+A new file system, cachefs:, has been introduced to allow applications to cache data to volatile or persistent storage. Users who extend the persistent storage available on their device by adding an external SD card will see the biggest benefit as application data will survive reboots and benefit from additional cache space to improve performance. Users without extended storage will also benefit from the use of a shared in-memory cache that is automatically managed by the system to optimize for the most recently used asset
+
+>https://blog.roku.com/developer/2017/10/02/roku-os-8-developer-release-notes
+
+## Problem cache whith MicroSd attached
+
+>https://community.roku.com/t5/Roku-Developer-Program/Cachefs-Unpredictable-Behaviour/m-p/463940/highlight/false#M36963
+
+
 # Cleaning cache 
 From the remote control, press the following buttons consecutively:
-Press Home 5 times.
-Press Up.
-Press Rewind 2 times.
-Press Fast Forward 2 times.
+- Press Home 5 times.
+- Press Up.
+- Press Rewind 2 times.
+- Press Fast Forward 2 times.
