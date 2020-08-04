@@ -67,6 +67,9 @@ A new file system, cachefs:, has been introduced to allow applications to cache 
   print m.files.exists("cachefs:/roku.png")
   end function
 
+>https://partnersuccessroku.com/hc/en-us/articles/360007445354?page=1#comment_360005163194
+>https://community.roku.com/t5/Roku-Developer-Program/Usage-of-cachefs/td-p/490099
+
 ## Problem cache whith MicroSd attached
 
 >https://community.roku.com/t5/Roku-Developer-Program/Cachefs-Unpredictable-Behaviour/m-p/463940/highlight/false#M36963
@@ -96,15 +99,15 @@ El Registry es un área de almacenamiento no volátil donde se puede almacenar u
 Puede ser escrito en un nodo Task o no , aunque la documentacion indique lo contrario (por buena programacion si tienes un firmware menor 8.0 debes realizarlo en un nodo Task, ya que hacerlo de esa manera asegura que su IU no se bloqueará mientras escribe datos en el registro ):
 
 > https://developer.roku.com/es-mx/docs/developer-program/core-concepts/scenegraph-brightscript/brightscript-support.md
-
->Antes del firmware 8.0 se requería un nodo Task, pero ese ya no es el caso.  Ambos componentes se pueden usar de forma segura en el hilo de renderizado.
+>
 >ReadAsciiFile () también se puede usar en el render thread desde el firmware 8.0 y tampoco lo han actualizado.
 
 Hay un registro separado para cada ID de desarrollador.  Esto permite que varias aplicaciones usen el registro sin poder leer o modificar el registro desde otras aplicaciones.  Si lo desea, se puede compartir un único registro en varias aplicaciones utilizando la misma ID de desarrollador para empaquetar las aplicaciones.  Esta es la forma convencional en que debería funcionar un "conjunto de aplicaciones" con preferencias compartidas y otra información compartida.  Cada registro se divide en secciones que el desarrollador especifica para la organización y agrupación de atributos.  Se proporcionan métodos en ifRegistry para enumerar las secciones en el registro y para proporcionar acceso a los datos en cada sección.  El tamaño máximo de cada registro de aplicación es de 16K bytes.  Se debe tener cuidado para minimizar la cantidad de datos almacenados y la frecuencia con la que se actualizan.
 
 El Registro también admite el uso de una sección especial de registro transitorio.  Una sección de registro llamada "Transitoria" se puede usar para almacenar atributos que tienen la vida útil de un solo arranque.  Dentro de una sesión de arranque específica, estos valores serán persistentes para la aplicación y se almacenarán como cualquier otro valor de registro.  Cada vez que el usuario reinicia el Roku Streaming Player, todas las secciones de registro "Transitorias" se eliminan y los valores ya no persisten.  Esta técnica es útil para el almacenamiento en caché de datos para minimizar el acceso a la red, y aún así garantiza que estos datos siempre estén actualizados después de un reinicio del sistema.
 
-El registro está encriptado y las actualizaciones requieren un rendimiento relativamente intenso y deben usarse con moderación.  Tenga en cuenta que todas las escrituras en el registro se retrasan y no se comprometen con el almacenamiento no volátil hasta que se llame explícitamente ifRegistry.Flush () o ifRegistrySection.Flush ().  La plataforma puede elegir momentos oportunos para vaciar datos por sí misma, pero ninguna aplicación es técnicamente correcta a menos que llame explícitamente a Flush () en los momentos apropiados.  Vaciar el registro es una operación relativamente lenta, por lo que debe realizarse con la menor frecuencia posible.  Los datos del Registro se almacenan de manera tolerante a fallas al preservar una copia de seguridad para cada escritura que se revierte automáticamente en caso de falla.
+El registro está encriptado y las actualizaciones requieren un rendimiento relativamente intenso y deben usarse con moderación.  Tenga en cuenta que todas las escrituras en el registro se retrasan y no se comprometen con el almacenamiento no volátil hasta que se llame explícitamente ***ifRegistry.Flush ()*** o ***ifRegistrySection.Flush ()***.  
+La plataforma puede elegir momentos oportunos para vaciar datos por sí misma, pero ninguna aplicación es técnicamente correcta a menos que llame explícitamente a ***Flush ()*** en los momentos apropiados.  Vaciar el registro es una operación relativamente lenta, por lo que debe realizarse con la menor frecuencia posible.  Los datos del Registro se almacenan de manera tolerante a fallas al preservar una copia de seguridad para cada escritura que se revierte automáticamente en caso de falla.
 
 ## SECCIONES DE REGISTRY
 
