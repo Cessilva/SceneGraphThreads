@@ -16,10 +16,13 @@ sub Main()
     ' Other place where we could need to storage data, is when we use screensavers
     ' https://developer.roku.com/es-mx/docs/developer-program/media-playback/screensavers.md
 
-    WriteAsciiFile("cachefs:/config.txt", "Hola me llamo ceci desde el cache")
-    text=ReadAsciiFile("cachefs:/config.txt")
+    ' WriteAsciiFile("cachefs:/config.txt", "Hola me llamo ceci desde el cache")
+    ' text=ReadAsciiFile("cachefs:/config.txt")
+
+
     print "------READ/WRITE CACHEFS MEMORY------------"
     print text
+    
 
 
     while(true)

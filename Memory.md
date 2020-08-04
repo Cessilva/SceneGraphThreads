@@ -42,15 +42,50 @@ Por lo tanto, un canal siempre debe verificar la existencia del archivo en el qu
 
 >https://developer.roku.com/es-mx/docs/references/brightscript/components/roregistry.md 
 
+
+# STORAGE DATA IN REGISTRY
+
 El Registry es un área de almacenamiento no volátil donde se puede almacenar una pequeña cantidad de configuraciones persistentes.  El Registro proporciona un medio para que una aplicación escriba y lea pequeñas cantidades de datos, como configuraciones, puntajes, etc. Los datos persisten incluso si el usuario sale de la aplicación e incluso si el reproductor se reinicia.  Los datos del registro se eliminan solo cuando la aplicación los elimina explícitamente, el usuario desinstala la aplicación, que elimina el registro de la aplicación, o el usuario realiza un restablecimiento de fábrica, que elimina el registro de todas las aplicaciones.  El acceso al registro está disponible a través del objeto roRegistry.  Este objeto se crea sin parámetros:
 
     CreateObject("roRegistry")
+
+Puede ser escrito en un nodo Task o no , aunque la documentacion indique lo contrario (por buena programacion si tienes un firmware menor 8.0 debes realizarlo en un nodo Task, ya que hacerlo de esa manera asegura que su IU no se bloqueará mientras escribe datos en el registro ):
+> https://developer.roku.com/es-mx/docs/developer-program/core-concepts/scenegraph-brightscript/brightscript-support.md
+>Antes del firmware 8.0 se requería un nodo Task, pero ese ya no es el caso.  Ambos componentes se pueden usar de forma segura en el hilo de renderizado.
+>ReadAsciiFile () también se puede usar en el render thread desde el firmware 8.0 y tampoco lo han actualizado.
 
 Hay un registro separado para cada ID de desarrollador.  Esto permite que varias aplicaciones usen el registro sin poder leer o modificar el registro desde otras aplicaciones.  Si lo desea, se puede compartir un único registro en varias aplicaciones utilizando la misma ID de desarrollador para empaquetar las aplicaciones.  Esta es la forma convencional en que debería funcionar un "conjunto de aplicaciones" con preferencias compartidas y otra información compartida.  Cada registro se divide en secciones que el desarrollador especifica para la organización y agrupación de atributos.  Se proporcionan métodos en ifRegistry para enumerar las secciones en el registro y para proporcionar acceso a los datos en cada sección.  El tamaño máximo de cada registro de aplicación es de 16K bytes.  Se debe tener cuidado para minimizar la cantidad de datos almacenados y la frecuencia con la que se actualizan.
 
 El Registro también admite el uso de una sección especial de registro transitorio.  Una sección de registro llamada "Transitoria" se puede usar para almacenar atributos que tienen la vida útil de un solo arranque.  Dentro de una sesión de arranque específica, estos valores serán persistentes para la aplicación y se almacenarán como cualquier otro valor de registro.  Cada vez que el usuario reinicia el Roku Streaming Player, todas las secciones de registro "Transitorias" se eliminan y los valores ya no persisten.  Esta técnica es útil para el almacenamiento en caché de datos para minimizar el acceso a la red, y aún así garantiza que estos datos siempre estén actualizados después de un reinicio del sistema.
 
 El registro está encriptado y las actualizaciones requieren un rendimiento relativamente intenso y deben usarse con moderación.  Tenga en cuenta que todas las escrituras en el registro se retrasan y no se comprometen con el almacenamiento no volátil hasta que se llame explícitamente ifRegistry.Flush () o ifRegistrySection.Flush ().  La plataforma puede elegir momentos oportunos para vaciar datos por sí misma, pero ninguna aplicación es técnicamente correcta a menos que llame explícitamente a Flush () en los momentos apropiados.  Vaciar el registro es una operación relativamente lenta, por lo que debe realizarse con la menor frecuencia posible.  Los datos del Registro se almacenan de manera tolerante a fallas al preservar una copia de seguridad para cada escritura que se revierte automáticamente en caso de falla.
+
+## SECCIONES DE REGISTRY
+
+Una sección de registro permite la organización de configuraciones dentro del registro.  Las diferentes secciones del registro pueden tener sus propias claves con el mismo nombre.  En otras palabras, los nombres de las claves están dentro de la sección de registro a la que pertenecen.  Este objeto se debe suministrar con un nombre de "sección" en la creación.  Si no existe tal sección, se creará.  Los nombres de sección distinguen entre mayúsculas y minúsculas, por lo que las secciones denominadas "Configuración" y "configuración" son dos secciones diferentes.
+
+    CreateObject("roRegistrySection", section as String)
+
+Example: Get and set some user authentication in the registry
+  Function GetAuthData() As Dynamic
+     sec = CreateObject("roRegistrySection", "Authentication")
+     if sec.Exists("UserRegistrationToken")
+         return sec.Read("UserRegistrationToken")
+     endif
+     return invalid
+  End Function
+
+  Function SetAuthData(userToken As String) As Void
+      sec = CreateObject("roRegistrySection", "Authentication")
+      sec.Write("UserRegistrationToken", userToken)
+      sec.Flush()
+  End Function
+
+## Other documentation
+> https://community.roku.com/t5/Roku-Developer-Program/Save-Info-To-Registry/td-p/472965
+## Supported interfaces
+> https://developer.roku.com/es-mx/docs/references/brightscript/interfaces/ifregistrysection.md 
+
 
 > Interfaces
 > https://developer.roku.com/es-mx/docs/references/brightscript/interfaces/ifregistry.md 
@@ -76,6 +111,10 @@ CacheFS está disponible para todos los canales en nuestra plataforma.  Si inici
 
 Example of why how to check if images is in CacheFS:
 
+Estas son prala leeer y escribir , aun no estoy segura 
+xfer.gettofile("cachefs:/"+txtstr)
+
+m.filez.Copyfile( "pkg:/images/button.png" , "cachefs:/button.png" )
 
 A partir de Roku OS 8, se implementa [BETA] New file system for data caching:
 
