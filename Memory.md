@@ -42,6 +42,50 @@ Por lo tanto, un canal siempre debe verificar la existencia del archivo en el qu
 
 >https://developer.roku.com/es-mx/docs/references/brightscript/components/roregistry.md 
 
+# Almacenar videos e imagenes en cachefs 
+
+No hay forma de determinar cuanta memoria esta disponible.Se utiliza código para eliminar las imágenes más antiguas cuando descargamos nuevas y mantenemos muy pocas imágenes localmente para evitar problemas con el almacenamiento. 
+
+Los archivos deberían persistir de esta manera al salir / reiniciar la aplicación, en cachefs: y tal vez en tmp: (inseguro sobre esto último), pero no a través del reinicio.  Y hay condiciones de poca memoria cuando el dispositivo necesita memoria, vaciará los archivos de caché para hacer espacio.  Lo cual es típico de los cachés.  La nota al margen es optimizar sus imágenes para el tamaño: mayor compresión o tal vez diseñar para HD en lugar de FHD, para que las imágenes se descarguen más rápido
+
+>https://community.roku.com/t5/Roku-Developer-Program/Image-caching/td-p/
+
+Puede almacenar imágenes en caché utilizando CacheFS.  De la misma manera que un archivo puede leerse desde "pkg: / filepath / filename", puede escribir y leer desde "cachefs: / filepath / filename". 
+CacheFS está disponible para todos los canales en nuestra plataforma.  Si inicia el Canal A (que usa CacheFS) y luego inicia el Canal B (que también usa CacheFS) en el mismo dispositivo, es posible que las imágenes del Canal A ya no se almacenen en caché debido a restricciones de memoria de CacheFS.
+
+A partir de Roku OS 8, se implementa [BETA] New file system for data caching:
+
+A new file system, cachefs:, has been introduced to allow applications to cache data to volatile or persistent storage. Users who extend the persistent storage available on their device by adding an external SD card will see the biggest benefit as application data will survive reboots and benefit from additional cache space to improve performance. Users without extended storage will also benefit from the use of a shared in-memory cache that is automatically managed by the system to optimize for the most recently used asset
+
+>https://blog.roku.com/developer/2017/10/02/roku-os-8-developer-release-notes
+
+## In cacheTask.brs
+
+  function init()
+  m.files = createObject("roFileSystem")
+  m.files.Copyfile( "pkg:/images/roku.png" , "cachefs:/roku.png" ) 
+  print m.files.exists("cachefs:/roku.png")
+  end function
+
+## Problem cache whith MicroSd attached
+
+>https://community.roku.com/t5/Roku-Developer-Program/Cachefs-Unpredictable-Behaviour/m-p/463940/highlight/false#M36963
+
+
+# Cleaning cache 
+From the remote control, press the following buttons consecutively:
+- Press Home 5 times.
+- Press Up.
+- Press Rewind 2 times.
+- Press Fast Forward 2 times.
+
+# Read and write from tmp file
+
+Este un ejemplo de como se realiza:
+
+<p align="center"> 
+<img src="/imgs/StorageTMP.png"/> 
+</p> 
 
 # STORAGE DATA IN REGISTRY
 
@@ -50,7 +94,9 @@ El Registry es un área de almacenamiento no volátil donde se puede almacenar u
     CreateObject("roRegistry")
 
 Puede ser escrito en un nodo Task o no , aunque la documentacion indique lo contrario (por buena programacion si tienes un firmware menor 8.0 debes realizarlo en un nodo Task, ya que hacerlo de esa manera asegura que su IU no se bloqueará mientras escribe datos en el registro ):
+
 > https://developer.roku.com/es-mx/docs/developer-program/core-concepts/scenegraph-brightscript/brightscript-support.md
+
 >Antes del firmware 8.0 se requería un nodo Task, pero ese ya no es el caso.  Ambos componentes se pueden usar de forma segura en el hilo de renderizado.
 >ReadAsciiFile () también se puede usar en el render thread desde el firmware 8.0 y tampoco lo han actualizado.
 
@@ -90,46 +136,3 @@ Example: Get and set some user authentication in the registry
 > Interfaces
 > https://developer.roku.com/es-mx/docs/references/brightscript/interfaces/ifregistry.md 
 
-# Read and write from temp file
-
-Este un ejemplo de como se realiza:
-
-<p align="center"> 
-<img src="/imgs/StorageTMP.png"/> 
-</p> 
-
-# Almacenar videos e imagenes en cachefs 
-
-No hay forma de determinar cuanta memoria esta disponible.Se utiliza código para eliminar las imágenes más antiguas cuando descargamos nuevas y mantenemos muy pocas imágenes localmente para evitar problemas con el almacenamiento. 
-
-Los archivos deberían persistir de esta manera al salir / reiniciar la aplicación, en cachefs: y tal vez en tmp: (inseguro sobre esto último), pero no a través del reinicio.  Y hay condiciones de poca memoria cuando el dispositivo necesita memoria, vaciará los archivos de caché para hacer espacio.  Lo cual es típico de los cachés.  La nota al margen es optimizar sus imágenes para el tamaño: mayor compresión o tal vez diseñar para HD en lugar de FHD, para que las imágenes se descarguen más rápido
-
->https://community.roku.com/t5/Roku-Developer-Program/Image-caching/td-p/
-
-Puede almacenar imágenes en caché utilizando CacheFS.  De la misma manera que un archivo puede leerse desde "pkg: / filepath / filename", puede escribir y leer desde "cachefs: / filepath / filename". 
-CacheFS está disponible para todos los canales en nuestra plataforma.  Si inicia el Canal A (que usa CacheFS) y luego inicia el Canal B (que también usa CacheFS) en el mismo dispositivo, es posible que las imágenes del Canal A ya no se almacenen en caché debido a restricciones de memoria de CacheFS.
-
-Example of why how to check if images is in CacheFS:
-
-Estas son prala leeer y escribir , aun no estoy segura 
-xfer.gettofile("cachefs:/"+txtstr)
-
-m.filez.Copyfile( "pkg:/images/button.png" , "cachefs:/button.png" )
-
-A partir de Roku OS 8, se implementa [BETA] New file system for data caching:
-
-A new file system, cachefs:, has been introduced to allow applications to cache data to volatile or persistent storage. Users who extend the persistent storage available on their device by adding an external SD card will see the biggest benefit as application data will survive reboots and benefit from additional cache space to improve performance. Users without extended storage will also benefit from the use of a shared in-memory cache that is automatically managed by the system to optimize for the most recently used asset
-
->https://blog.roku.com/developer/2017/10/02/roku-os-8-developer-release-notes
-
-## Problem cache whith MicroSd attached
-
->https://community.roku.com/t5/Roku-Developer-Program/Cachefs-Unpredictable-Behaviour/m-p/463940/highlight/false#M36963
-
-
-# Cleaning cache 
-From the remote control, press the following buttons consecutively:
-- Press Home 5 times.
-- Press Up.
-- Press Rewind 2 times.
-- Press Fast Forward 2 times.

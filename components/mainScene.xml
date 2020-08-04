@@ -8,5 +8,11 @@
 	height="720" 
 	horizAlign="center"
 	vertAlign="center"/>
+	<Poster
+	id="testPoster"
+	uri="cachefs:/roku.png"
+	width="0.0"
+	height="0.0"
+	translation="[160,8]" />
 </children>
 </component>
