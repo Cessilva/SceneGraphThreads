@@ -25,3 +25,10 @@ splash_screen_sd=pkg:/images/splash-screen_sd.jpg
 
 splash_color=#000000
 splash_min_time=1
+
+bsprof_data_dest=network
+bsprof_enable=1
+bsprof_enable_lines=1
+bsprof_enable_mem=1
+bsprof_sample_ratio=1.0
+rsg_version=1.2
